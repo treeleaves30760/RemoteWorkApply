@@ -1,6 +1,12 @@
+from os import path
 from urllib import request
 import urllib.parse
 from urllib.request import *
+
+import json
+import time
+json_path = "./json/"
+
 dataTime = {"historicalDataEndDate" : '2021/09/20', "historicalDataStartDateFormatted" : '08/01/2021', 'historicalDataStartDate' : '2021/08/01'}
 dataTime = urllib.parse.urlencode(dataTime).encode('utf8')
 url = 'https://cn.investing.com/equities/apple-computer-inc-historical-data' + '?' + str(dataTime)[2:-1]
@@ -47,4 +53,9 @@ while(i < end + 1):
     else:
         i += 1
 print(datas)
-print(len(datas))
+
+datas = json.dumps(datas)
+filename = str(time.time()) + ".json"
+f = open(json_path + filename, mode="w")
+f.write(datas)
+f.close()
