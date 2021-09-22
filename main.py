@@ -1,19 +1,19 @@
 from os import path
-from urllib import request
+import urllib
 import urllib.parse
-from urllib.request import *
+import urllib.request
 
 import json
 import time
 json_path = "./json/"
 
-dataTime = {"historicalDataEndDate" : '2021/09/20', "historicalDataStartDateFormatted" : '08/01/2021', 'historicalDataStartDate' : '2021/08/01'}
-dataTime = urllib.parse.urlencode(dataTime).encode('utf8')
-url = 'https://cn.investing.com/equities/apple-computer-inc-historical-data' + '?' + str(dataTime)[2:-1]
-print(url)
-header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36', }
-response = Request(url, headers = header)
-content = str(urlopen(response).read()).split("\\n")
+dataTime = {"startDate":'2021/01/01', 'endDate':'2021/09/20'}
+dataTime = urllib.parse.urlencode(dataTime).encode("utf-8")
+url = 'https://cn.investing.com/equities/apple-computer-inc-historical-data'
+
+header = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.82 Safari/537.36'}
+req = urllib.request.Request(url, headers = header, data = dataTime)
+content = str(urllib.request.urlopen(req).read()).split("\\n")
 
 start = 0
 end = 0
@@ -52,10 +52,12 @@ while(i < end + 1):
         i += 6
     else:
         i += 1
-print(datas)
+# print(datas)
 
-datas = json.dumps(datas)
-filename = str(time.time()) + ".json"
-f = open(json_path + filename, mode="w")
-f.write(datas)
-f.close()
+print(len(datas))
+
+# datas = json.dumps(datas)
+# filename = str(time.time()) + ".json"
+# f = open(json_path + filename, mode="w")
+# f.write(datas)
+# f.close()
